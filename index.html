@@ -30,7 +30,22 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-    
+        }
+        
+        .container { 
+            /* Efek Kaca Buram (Glassmorphism) agar konten terbaca */
+            background: rgba(10, 15, 25, 0.6); /* Warna biru tua semi-transparan */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            
+            padding: 30px; 
+            border-radius: 20px; 
+            text-align: center; 
+            width: 90%; 
+            max-width: 500px; 
+        }
         h1 { 
             font-size: 2em; 
             margin-bottom: 20px; 
