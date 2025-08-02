@@ -15,7 +15,6 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        /* --- PERUBAHAN CSS DI SINI --- */
         body { 
             font-family: 'Poppins', sans-serif; 
             display: flex; 
@@ -23,8 +22,9 @@
             align-items: center; 
             min-height: 100vh; 
             
-            /* Menggunakan link tautan Anda sebagai background, tanpa overlay gelap */
+            /* ===== PERUBAHAN DI SINI ===== */
             background-image: url('https://i.postimg.cc/4N0HZ03c/Whats-App-Image-2025-08-02-at-13-20-09.jpg');
+            /* ============================== */
             
             background-size: cover;
             background-position: center;
@@ -33,19 +33,24 @@
         }
         
         .container { 
-            /* Efek Kaca Buram (Glassmorphism) agar konten terbaca */
-            background: rgba(10, 15, 25, 0.6); /* Warna biru tua semi-transparan */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            
+            background: transparent; 
+            box-shadow: none; 
             padding: 30px; 
             border-radius: 20px; 
             text-align: center; 
             width: 90%; 
             max-width: 500px; 
         }
+
+        /* --- CSS BARU UNTUK LOGO --- */
+        .logo-image {
+            display: block;
+            max-width: 200px; /* Atur lebar maksimal logo */
+            height: auto;
+            margin: 0 auto 20px; /* Posisi di tengah dan beri jarak bawah */
+        }
+        /* ------------------------- */
+
         h1 { 
             font-size: 2em; 
             margin-bottom: 20px; 
@@ -57,7 +62,7 @@
             width: 100%; 
             height: 100%; 
             border-radius: 50%; 
-            border: 5px solid rgba(255, 255, 255, 0.1); /* Border semi-transparan yang cocok */
+            border: none; 
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             transition: transform 7s cubic-bezier(0.25, 1, 0.5, 1); 
         }
@@ -81,8 +86,8 @@
             min-height: 30px; 
             color: #2ecc71; 
             padding-top: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Menambahkan shadow agar teks lebih terbaca */
         }
-        /* --- AKHIR PERUBAHAN CSS --- */
 
         .wheel-container { 
             position: relative; 
@@ -148,7 +153,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>Roda Keberuntungan</h1>
+        <img src="https://i.postimg.cc/j5d1CqTj/LOGO-DOSIS77.png" alt="Logo" class="logo-image">
+        
+        <h1>RODA KEBERUNTUNGAN</h1>
         <div class="wheel-container">
             <div class="pointer"></div>
             <div id="wheel"></div>
@@ -162,6 +169,7 @@
     </div>
 
     <script>
+        // TIDAK ADA PERUBAHAN PADA JAVASCRIPT
         document.addEventListener('DOMContentLoaded', () => {
             const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxjVy44sgZF37-DAwB5z-UGafNC7G0l7pwrrVMiV2QDyVGu1L6O5tahOvfqYlwkCbEH5Q/exec";
 
@@ -236,11 +244,15 @@
                 if (isSpinning) return;
 
                 const username = usernameInput.value.trim();
-                const phone = phoneInput.value.trim();
+                let phone = phoneInput.value.trim();
 
                 if (username === '' || phone === '') {
                     alert("Harap isi Username dan Nomor Telepon!");
                     return;
+                }
+                
+                if (phone.startsWith('0')) {
+                    phone = '+62' + phone.substring(1);
                 }
                 
                 isSpinning = true;
@@ -303,4 +315,3 @@
     </script>
 </body>
 </html>
-
