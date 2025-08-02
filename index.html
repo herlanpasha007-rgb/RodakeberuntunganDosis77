@@ -2,7 +2,15 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- ================================================================= -->
+    <!-- PERUBAHAN UTAMA 1: Mengubah Meta Tag Viewport -->
+    <!-- Baris ini memaksa browser mobile untuk merender halaman dengan lebar 1200px, -->
+    <!-- sehingga tampilannya akan menjadi versi mini dari tampilan desktop. -->
+    <!-- ================================================================= -->
+    <meta name="viewport" content="width=1200">
+    <!-- ================================================================= -->
+
     <title>Lucky Roulette (Connected & Colorful)</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
@@ -18,20 +26,40 @@
         body { 
             font-family: 'Poppins', sans-serif; 
             display: flex; 
-            justify-content: center; 
+            justify-content: flex-end; /* Konten di kanan untuk PC */
             align-items: center; 
             min-height: 100vh; 
-            
-            background-image: 
-                linear-gradient(rgba(44, 62, 80, 0.85), rgba(44, 62, 80, 0.85)),
-                url('https://i.postimg.cc/4N0HZ03c/Whats-App-Image-2025-08-02-at-13-20-09.jpg');
-            
+            position: relative;
+            background-color: #0a0c14;
+            overflow: hidden;
+            padding: 20px 50px; /* Memberi sedikit padding di sisi */
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image: url('https://i.postimg.cc/4N0HZ03c/Whats-App-Image-2025-08-02-at-13-20-09.jpg');
             background-size: cover;
-            background-position: center;
+            background-position: center left; 
             background-repeat: no-repeat;
-            background-attachment: fixed;
         }
         
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(to left, #0a0c14 40%, rgba(10, 12, 20, 0.5) 70%, transparent 100%);
+        }
+
         .container { 
             background: transparent; 
             box-shadow: none; 
@@ -137,7 +165,7 @@
         #spin-btn:disabled { background-color: #aaa; cursor: not-allowed; }
         .player-form { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
         .player-form input:focus { outline: none; border-color: var(--accent-color); }
-        @media (max-width: 600px) { :root { --wheel-size: 300px; } .container { padding: 20px; } h1 { font-size: 1.5em; } .segment span { font-size: 12px; } #spin-btn { width: 70px; height: 70px; font-size: 16px; } }
+        
     </style>
 </head>
 <body>
@@ -207,8 +235,11 @@
             
             const fetchPrizes = async () => {
                 try {
+                    // --- PERUBAHAN DI SINI ---
+                    // Menambahkan 'redirect: follow' untuk mengatasi error fetch
                     const response = await fetch(WEB_APP_URL, {
                         method: 'POST',
+                        redirect: 'follow', // <-- BARIS INI DITAMBAHKAN
                         headers: {'Content-Type': 'text/plain;charset=utf-8'},
                         body: JSON.stringify({ action: 'get_prizes' })
                     });
@@ -230,19 +261,16 @@
                 if (isSpinning) return;
 
                 const username = usernameInput.value.trim();
-                let phone = phoneInput.value.trim(); // Diubah ke 'let' agar bisa dimodifikasi
+                let phone = phoneInput.value.trim();
 
                 if (username === '' || phone === '') {
                     alert("Harap isi Username dan Nomor Telepon!");
                     return;
                 }
                 
-                // --- PERUBAHAN UTAMA DI SINI ---
-                // Mengubah format nomor telepon dari '0' menjadi '+62'
                 if (phone.startsWith('0')) {
                     phone = '+62' + phone.substring(1);
                 }
-                // --- AKHIR PERUBAHAN ---
                 
                 isSpinning = true;
                 spinBtn.disabled = true;
@@ -253,7 +281,6 @@
                         method: 'POST',
                         redirect: 'follow',
                         headers: {'Content-Type': 'text/plain;charset=utf-8'},
-                        // Mengirim nomor telepon yang sudah diformat
                         body: JSON.stringify({ action: 'spin', username: username, phoneNumber: phone })
                     });
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
